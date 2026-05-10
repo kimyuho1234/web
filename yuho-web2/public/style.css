@@ -1110,84 +1110,114 @@ body.dark .post_item {
 
 .board_write_wrap {
     position: fixed;
-    top: 0;
-    /* 추가: 화면 맨 위부터 시작 */
-    left: 0;
-    /* 추가: 화면 맨 왼쪽부터 시작 */
-    width: 100%;
-    /* 수정: 전체 너비 */
-    height: 100%;
-    /* 추가: 전체 높이 */
-    background: rgba(0, 0, 0, 0.6);
-    /*배경을 조금 더 어둡게 하면 집중도가 높습니다 */
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 24px;
     z-index: 9999;
-    /* 다른 요소보다 확실히 위에 오도록 */
-    padding: 20px;
-    backdrop-filter: blur(5px);
-    /* 배경 흐림 효과 추가 */
+    backdrop-filter: blur(4px);
 }
 
 .board_write_card {
-    width: min(700px, 100%);
-    margin: 0;
-    border-radius: 24px;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+    width: min(760px, 100%);
+    background: #d7d7d7;
+    border-radius: 28px;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.22);
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
 }
 
 .board_write_top {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 18px;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    gap: 16px;
 }
 
 .board_write_top h3 {
-    color: #2b7cff;
+    color: #0f4ec9;
     margin: 0;
-    font-size: 28px;
+    font-size: 2.2rem;
+    line-height: 1.1;
 }
 
-.small_btn {
+#closeWriteBtn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
     border: none;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    font-size: 1.35rem;
     cursor: pointer;
-    border-radius: 14px;
-    font-weight: 700;
-    transition: 0.22s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.18s ease, background 0.18s ease;
 }
 
-.small_btn {
-    background: linear-gradient(90deg, #2b7cff, #00c6ff);
+#closeWriteBtn:hover {
+    transform: scale(1.05);
+    background: #ffffff;
+}
+
+.board_write_card input,
+.board_write_card textarea {
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    background: #fff;
+    font-size: 1rem;
+    color: #222;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.board_write_card input::placeholder,
+.board_write_card textarea::placeholder {
+    color: #8e96ab;
+}
+
+.board_write_card textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+.board_write_card label {
+    font-size: 0.95rem;
+    color: #333;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.board_submit {
+    width: 100%;
+    border: none;
+    border-radius: 18px;
+    padding: 18px;
+    font-size: 1rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #2b7cff, #0099ff);
     color: white;
+    cursor: pointer;
+    transition: transform 0.18s ease, opacity 0.18s ease;
 }
 
-.small_btn {
-    padding: 8px 12px;
-    font-size: 13px;
-}
-
-.small_btn:hover {
+.board_submit:hover {
     transform: translateY(-2px);
+    opacity: 0.95;
 }
 
-.small_btn {
-    border: none;
-    cursor: pointer;
-    border-radius: 14px;
-    font-weight: 700;
-    transition: 0.22s ease;
-}
-
-.small_btn {
-    background: linear-gradient(90deg, #2b7cff, #00c6ff);
-    color: white;
-}
-
-.small_btn {
-    padding: 8px 12px;
-    font-size: 13px;
+.board_write_wrap.hidden {
+    display: none !important;
 }
 
 /* 글쓰기 팝업 배경

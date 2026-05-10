@@ -186,7 +186,7 @@ window.goRegister = function () {
 
 function fillAuthorName() {
     const user = getCurrentUser();
-    const input = document.getElementById("post-author");
+    const input = document.getElementById("author");
 
     if (user && input) {
         input.value = user.name || user.username;
@@ -322,33 +322,28 @@ function loadPosts() {
             return b.id - a.id;
         });
 
+    const boardEmptyState = document.getElementById("boardEmptyState");
+    const boardListWrap = document.getElementById("boardListWrap");
+
     postList.innerHTML = "";
 
     if (posts.length === 0) {
-        postList.innerHTML = "<p>아직 게시글이 없습니다.</p>";
+        if (boardEmptyState) boardEmptyState.classList.remove("hidden");
+        if (boardListWrap) boardListWrap.classList.add("hidden");
         return;
     }
+
+    if (boardEmptyState) boardEmptyState.classList.add("hidden");
+    if (boardListWrap) boardListWrap.classList.remove("hidden");
 
 
     const currentUser = getCurrentUser();
 
     posts.forEach((post) => {
-        const canView =
-            !post.isSecret ||
-            (currentUser &&
-                (
-                    currentUser.role === "admin" ||
-                    currentUser.email === post.email ||
-                    currentUser.name === post.author
-                ));
+        const canView = !post.isSecret || (currentUser && (currentUser.role === "admin" || currentUser.email === post.email));
 
-        const canManage =
-            currentUser &&
-            (
-                currentUser.role === "admin" ||
-                currentUser.email === post.email ||
-                currentUser.name === post.author
-            );
+        // 수정/삭제 권한: 관리자 또는 작성자 본인
+        const canManage = currentUser && (currentUser.role === "admin" || currentUser.email === post.email);
 
         const div = document.createElement("div");
         div.className = `post_item ${post.isNotice ? "notice" : ""}`;
@@ -381,37 +376,42 @@ postForm?.addEventListener("submit", function (e) {
 
     const title = document.getElementById("title").value.trim();
     const content = document.getElementById("content").value.trim();
+    const authorInput = document.getElementById("author");
+    const anonymousInput = document.getElementById("isAnonymous");
 
     if (!title || !content) {
         alert("제목과 내용을 입력해주세요.");
         return;
     }
 
+    if (!anonymousInput.checked && !authorInput.value.trim()) {
+        alert("작성자 이름을 입력해주세요.");
+        return;
+    }
+
     const posts = getPosts();
-
-    const authorInput = document.getElementById("author");
-    const anonymousInput = document.getElementById("isAnonymous");
-
-    const author = anonymousInput.checked
-        ? "익명"
-        : authorInput.value.trim();
+    const user = getCurrentUser();
+    const author = anonymousInput.checked ? "익명" : authorInput.value.trim();
 
     posts.push({
         id: Date.now(),
         title,
         content,
         author,
+        email: user ? user.email : "",
         isNotice: false,
         isPinned: false,
         date: new Date().toLocaleDateString("ko-KR")
     });
 
     savePosts(posts);
-    const user = getCurrentUser();
     addAdminLog("게시글 등록", `${user?.name || "익명"} / 제목: ${title}`);
     postForm.reset();
     loadPosts();
     loadAdminPanel();
+    const boardWriteWrap = document.getElementById("boardWriteWrap");
+    if (boardWriteWrap) boardWriteWrap.classList.add("hidden");
+    showPage("board");
     alert("게시글이 등록되었습니다.");
 });
 
@@ -796,14 +796,23 @@ const boardWriteWrap = document.getElementById("boardWriteWrap");
 
 openWriteBtn?.addEventListener("click", () => {
     boardWriteWrap.classList.remove("hidden");
+    fillAuthorName();
 });
 
 closeWriteBtn?.addEventListener("click", () => {
     boardWriteWrap.classList.add("hidden");
 });
 
-boardWriteWrap?.addEventListener("click", (e) => {
-    if (e.target === boardWriteWrap) {
-        boardWriteWrap.classList.add("hidden");
+// 익명 체크박스 처리
+const isAnonymousCheckbox = document.getElementById("isAnonymous");
+const authorInput = document.getElementById("author");
+
+isAnonymousCheckbox?.addEventListener("change", function() {
+    if (this.checked) {
+        authorInput.disabled = true;
+        authorInput.value = "";
+    } else {
+        authorInput.disabled = false;
+        fillAuthorName();
     }
 });
