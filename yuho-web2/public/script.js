@@ -407,7 +407,8 @@ postForm?.addEventListener("submit", function (e) {
     });
 
     savePosts(posts);
-    addAdminLog("게시글 등록", `${user.name} / 제목: ${title}`);
+    const user = getCurrentUser();
+    addAdminLog("게시글 등록", `${user?.name || "익명"} / 제목: ${title}`);
     postForm.reset();
     loadPosts();
     loadAdminPanel();
