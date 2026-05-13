@@ -657,6 +657,7 @@ body.dark #noticeForm textarea {
     gap: 8px;
     font-size: 15px;
     margin-top: 2px;
+    white-space: nowrap;
 }
 
 .post_meta {
@@ -787,6 +788,7 @@ body.dark #noticeForm textarea {
     gap: 8px;
     font-size: 15px;
     margin-top: 4px;
+    white-space: nowrap;
 }
 
 .post_actions {
@@ -1563,44 +1565,159 @@ body.dark #postForm textarea {
 
 .board_write_wrap {
     position: fixed;
-    top: 0;
-    /* 추가: 화면 맨 위부터 시작 */
-    left: 0;
-    /* 추가: 화면 맨 왼쪽부터 시작 */
-    width: 100%;
-    /* 수정: 전체 너비 */
-    height: 100%;
-    /* 추가: 전체 높이 */
-    background: rgba(0, 0, 0, 0.6);
-    /*배경을 조금 더 어둡게 하면 집중도가 높습니다 */
+    inset: 0;
+    background: rgba(10, 15, 30, 0.6);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    /* 다른 요소보다 확실히 위에 오도록 */
-    padding: 20px;
-    backdrop-filter: blur(5px);
-    /* 배경 흐림 효과 추가 */
+    padding: 24px;
+    backdrop-filter: blur(8px);
 }
 
 .board_write_card {
-    width: min(700px, 100%);
-    margin: 0;
-    border-radius: 24px;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+    width: min(720px, 100%);
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 28px;
+    box-shadow: 0 32px 70px rgba(0, 0, 0, 0.18);
+    padding: 32px;
+    overflow: hidden;
+    position: relative;
+}
+
+body.dark .board_write_card {
+    background: rgba(20, 20, 25, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .board_write_top {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 18px;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
 .board_write_top h3 {
-    color: #2b7cff;
+    color: #0f4ec9;
     margin: 0;
-    font-size: 28px;
+    font-size: 2rem;
+}
+
+#closeWriteBtn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.96);
+    color: #333;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+body.dark #closeWriteBtn {
+    background: rgba(35, 35, 40, 0.95);
+    color: #f4f4f4;
+}
+
+#closeWriteBtn:hover {
+    transform: scale(1.05);
+    background: #ffffff;
+}
+
+.board_write_form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.board_write_form .input_group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.board_write_form input,
+.board_write_form textarea {
+    width: 100%;
+    border-radius: 18px;
+    border: 1px solid rgba(34, 41, 68, 0.12);
+    padding: 18px 20px;
+    background: #f9fbff;
+    color: #222;
+    font-size: 1rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+body.dark .board_write_form input,
+body.dark .board_write_form textarea {
+    background: #1d1f27;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #f5f5f5;
+}
+
+.board_write_form input::placeholder,
+.board_write_form textarea::placeholder {
+    color: #8f96ac;
+}
+
+.board_write_form textarea {
+    min-height: 180px;
+    resize: vertical;
+}
+
+.checkbox_label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #4f5c7b;
+    font-size: 0.95rem;
+}
+
+.checkbox_label input {
+    width: 16px;
+    height: 16px;
+    accent-color: #2b7cff;
+}
+
+.board_submit {
+    width: 100%;
+    border: none;
+    border-radius: 20px;
+    padding: 18px;
+    font-size: 1rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #2b7cff, #0099ff);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.board_submit:hover {
+    transform: translateY(-2px);
+    opacity: 0.98;
+}
+
+@media (max-width: 540px) {
+    .board_write_card {
+        padding: 22px;
+    }
+
+    .board_write_top h3 {
+        font-size: 1.6rem;
+    }
+
+    .board_write_form input,
+    .board_write_form textarea {
+        padding: 16px;
+    }
 }
 
 /* 게시글 버튼 컨테이너 */
@@ -1615,14 +1732,12 @@ body.dark #postForm textarea {
     padding: 8px 20px;
     border: none;
     border-radius: 50px;
-    /* 아주 둥근 캡슐 모양 */
     font-size: 0.9rem;
     font-weight: bold;
     color: white;
-    /* 글자색 하얀색 */
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* 약간의 그림자 */
+
     transition: transform 0.2s;
     background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
     /* 더 짙은 파랑/보라 계열 */

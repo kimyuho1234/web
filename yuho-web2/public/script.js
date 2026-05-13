@@ -176,7 +176,18 @@ function renderHeaderAuth() {
 
 renderHeaderAuth();
 
+function clearLoginForm() {
+    const emailInput = document.getElementById("login-email");
+    const passwordInput = document.getElementById("login-password");
+    const loginError = document.getElementById("login-error");
+
+    if (emailInput) emailInput.value = "";
+    if (passwordInput) passwordInput.value = "";
+    if (loginError) loginError.style.display = "none";
+}
+
 window.goLogin = function () {
+    clearLoginForm();
     showPage("login");
 };
 
@@ -188,7 +199,7 @@ function fillAuthorName() {
     const user = getCurrentUser();
     const input = document.getElementById("author");
 
-    if (user && input) {
+    if (user && input && !input.value.trim()) {
         input.value = user.name || user.username;
     }
 }
@@ -813,6 +824,6 @@ isAnonymousCheckbox?.addEventListener("change", function() {
         authorInput.value = "";
     } else {
         authorInput.disabled = false;
-        fillAuthorName();
+        authorInput.value = "";
     }
 });
