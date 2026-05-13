@@ -1679,13 +1679,16 @@ body.dark .board_write_form textarea {
     gap: 8px;
     color: #4f5c7b;
     font-size: 0.95rem;
+    height: 100%;
 }
 
 .checkbox_label input {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     accent-color: #2b7cff;
+    margin: 0;
 }
+
 
 .board_submit {
     width: 100%;
